@@ -2,4 +2,10 @@
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+  background-color: #b0f1c5;
+  color: #333;
+}
+
+img {
+  border: 5px solid brown;
 }
