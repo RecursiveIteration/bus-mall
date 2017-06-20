@@ -1,26 +1,26 @@
 'use strict';
 
 var productNames = [
-  'bag',
-  'banana',
-  'bathroom',
-  'boots',
-  'breakfast',
-  'bubblegum',
-  'chair',
-  'cthulhu',
-  'dog-duck',
-  'dragon',
-  'pen',
-  'pet-sweep',
-  'scissors',
-  'shark',
-  'sweep',
-  'tauntaun',
-  'unicorn',
-  'usb',
-  'water-can',
-  'wine-glass'
+  ['bag', 'images/bag.jpg'],
+  ['banana', 'images/banana.jpg'],
+  ['bathroom', 'images/bathroom.jpg'],
+  ['boots', 'images/boots.jpg'],
+  ['breakfast', 'images/breakfast.jpg'],
+  ['bubblegum', 'images/bubblegum.jpg'],
+  ['chair', 'images/chair.jpg'],
+  ['cthulhu', 'images/cthulhu.jpg'],
+  ['dog-duck', 'images/dog-duck.jpg'],
+  ['dragon', 'images/dragon.jpg'],
+  ['pen', 'images/pen.jpg'],
+  ['pet-sweep', 'images/pet-sweep.jpg'],
+  ['scissors', 'images/scissors.jpg'],
+  ['shark', 'images/shark.jpg'],
+  ['sweep', 'images/sweep.png'],
+  ['tauntaun', 'images/tauntaun.jpg'],
+  ['unicorn', 'images/unicorn.jpg'],
+  ['usb', 'images/usb.gif'],
+  ['water-can', 'images/water-can.jpg'],
+  ['wine-glass', 'images/wine-glass.jpg']
 ];
 
 var productMap = {};
@@ -64,7 +64,7 @@ function registerVote (e) {
 selectionItems.addEventListener('click', registerVote);
 
 function printReport() {
-  for (var i in productList) {
+  for (var i = 0; i < productList.length; i++) {
     var el = document.createElement('h3');
     el.textContent = productList[i].name;
     results.appendChild(el);
@@ -111,7 +111,7 @@ function createProducts () {
 }
 
 function createProductMap () {
-  for (var i in productList) {
+  for (var i = 0; i < productList.length; i++) {
     productMap[productList[i].imageURL] = productList[i];
   }
 }
@@ -136,9 +136,9 @@ function randomItem (itemList) {
   return itemList[returnIndex];
 }
 
-function Product (name) {
-  this.name = name;
-  this.imageURL = 'images/' + name + '.jpg';
+function Product (info) {
+  this.name = info[0];
+  this.imageURL = info[1];
   this.numberOfClicks = 0;
   this.numberOfShows = 0;
 }
