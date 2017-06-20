@@ -25,7 +25,6 @@ var productNames = [
 
 var productMap = {};
 var productList = [];
-//var message = document.getElementById('message');
 var selectionItems = document.getElementById('selectionItems');
 var results = document.getElementById('results');
 var currentQuestion = 0;
@@ -64,20 +63,55 @@ function registerVote (e) {
 selectionItems.addEventListener('click', registerVote);
 
 function printReport() {
-  for (var i = 0; i < productList.length; i++) {
-    var el = document.createElement('h3');
-    el.textContent = productList[i].name;
-    results.appendChild(el);
-    var p1 = document.createElement('p');
-    p1.textContent = 'Times Displayed: ' + productList[i].numberOfShows;
-    results.appendChild(p1);
-    var p2 = document.createElement('p');
-    p2.textContent = 'Times Picked: ' + productList[i].numberOfClicks;
-    results.appendChild(p2);
-  }
+  var canvas = document.createElement('canvas');
+  results.appendChild(canvas);
+  var ctx = canvas.getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: getNames(),
+      datasets: [{
+        label: 'Popularity',
+        data: getPopularity(),
+        backgroundColor: '#333',
+        borderColor: '#333',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
 }
 
-function displayNothing() {
+function getNames () {
+  var result = [];
+  for (var i = 0; i < productList.length; i++) {
+    result.push(productList[i].name);
+  }
+  return result;
+}
+
+function getPopularity () {
+  var result = [];
+  for (var i = 0; i < productList.length; i++) {
+    try {
+      var percent = productList[i].numberOfClicks / productList[i].numberOfShows;
+      result.push(percent);
+    } catch (err) {
+      result.push(0);
+    }
+  }
+  return result;
+}
+
+function displayNothing () {
   for (var i = 2; i >= 0; i--) {
     selectionItems.removeChild(choiceImages[i]);
   }
