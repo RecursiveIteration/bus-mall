@@ -27,7 +27,7 @@ var productMap = {};
 var productList = [];
 //var message = document.getElementById('message');
 var selectionItems = document.getElementById('selectionItems');
-//var results = document.getElementById('results');
+var results = document.getElementById('results');
 var currentQuestion = 0;
 var totalQuestions = 25;
 var choiceImages = [];
@@ -48,16 +48,34 @@ function askQuestion () {
   displayChoices();
 }
 
-selectionItems.addEventListener('click', function (e) {
+function registerVote (e) {
   var selectedItem = productMap[e.target.getAttribute('src')];
   selectedItem.numberOfClicks++;
   currentQuestion++;
   if (currentQuestion < totalQuestions) {
     askQuestion();
   } else {
+    selectionItems.removeEventListener('click', registerVote);
     displayNothing();
+    printReport();
   }
-});
+}
+
+selectionItems.addEventListener('click', registerVote);
+
+function printReport() {
+  for (var i in productList) {
+    var el = document.createElement('h3');
+    el.textContent = productList[i].name;
+    results.appendChild(el);
+    var p1 = document.createElement('p');
+    p1.textContent = 'Times Displayed: ' + productList[i].numberOfShows;
+    results.appendChild(p1);
+    var p2 = document.createElement('p');
+    p2.textContent = 'Times Picked: ' + productList[i].numberOfClicks;
+    results.appendChild(p2);
+  }
+}
 
 function displayNothing() {
   for (var i = 2; i >= 0; i--) {
