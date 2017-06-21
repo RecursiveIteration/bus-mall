@@ -11,3 +11,8 @@ img {
   max-width: 30%;
   max-height: 200px;
 }
+
+#results {
+  width: 75%;
+  height: 75%;
+}
