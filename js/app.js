@@ -23,22 +23,33 @@ var productNames = [
   ['wine-glass', 'images/wine-glass.jpg']
 ];
 
-var productMap = {};
-var productList = [];
+//Gamestate variables
+var gameState = {
+  currentQuestion: 0,
+  currentItems: [],
+  restrictedItems: [],
+  productList: [],
+  productMap: {}
+};
+
+//Non game-state variables
+var choiceImages = [];
+var totalQuestions = 25;
 var selectionItems = document.getElementById('selectionItems');
 var results = document.getElementById('results');
-var currentQuestion = 0;
-var totalQuestions = 25;
-var choiceImages = [];
-var currentItems = [];
-var restrictedItems = [];
 
 main();
 
 function main () {
-  createProducts();
-  createProductMap();
+  var previousGameState = getGameState();
+  if (!previousGameState) {
+    createProducts();
+    createProductMap();
+  } else {
+    gameState = previousGameState;
+  }
   initializeSelectionWindow();
+  createOrUpdateGameState();
   askQuestion();
 }
 
@@ -48,10 +59,15 @@ function askQuestion () {
 }
 
 function registerVote (e) {
-  var selectedItem = productMap[e.target.getAttribute('src')];
+  var selectedItem = gameState.productMap[e.target.getAttribute('src')];
   selectedItem.numberOfClicks++;
-  currentQuestion++;
-  if (currentQuestion < totalQuestions) {
+  for (var i = 0; i < gameState.currentItems.length; i++) {
+    console.log(gameState.currentItems.length);
+    gameState.currentItems[i].numberOfShows++;
+  }
+  gameState.currentQuestion++;
+  createOrUpdateGameState();
+  if (gameState.currentQuestion < totalQuestions) {
     askQuestion();
   } else {
     selectionItems.removeEventListener('click', registerVote);
@@ -88,21 +104,22 @@ function printReport() {
       }
     }
   });
+  clearGameState();
 }
 
 function getNames () {
   var result = [];
-  for (var i = 0; i < productList.length; i++) {
-    result.push(productList[i].name);
+  for (var i = 0; i < gameState.productList.length; i++) {
+    result.push(gameState.productList[i].name);
   }
   return result;
 }
 
 function getPopularity () {
   var result = [];
-  for (var i = 0; i < productList.length; i++) {
+  for (var i = 0; i < gameState.productList.length; i++) {
     try {
-      var percent = productList[i].numberOfClicks / productList[i].numberOfShows;
+      var percent = gameState.productList[i].numberOfClicks / gameState.productList[i].numberOfShows;
       result.push(percent);
     } catch (err) {
       result.push(0);
@@ -118,35 +135,36 @@ function displayNothing () {
 }
 
 function displayChoices () {
+  var tempList = [];
   for (var i = 0; i < 3; i++) {
-    var item = randomItem(currentItems);
-    currentItems.splice(currentItems.indexOf(item), 1);
+    var item = randomItem(gameState.currentItems);
+    tempList.push(gameState.currentItems.splice(gameState.currentItems.indexOf(item), 1)[0]);
     choiceImages[i].setAttribute('src', item.imageURL);
   }
+  gameState.currentItems = tempList;
 }
 
 function selectChoices () {
-  currentItems = [];
-  if (restrictedItems.length > 3) {
-    restrictedItems.splice(0, restrictedItems.length - 3);
+  gameState.currentItems = [];
+  if (gameState.restrictedItems.length > 3) {
+    gameState.restrictedItems.splice(0, gameState.restrictedItems.length - 3);
   }
   for (var i = 0; i < 3; i++) {
     var nextItem = selectValidItem();
-    nextItem.numberOfShows++;
-    currentItems.push(nextItem);
-    restrictedItems.push(nextItem);
+    gameState.currentItems.push(nextItem);
+    gameState.restrictedItems.push(nextItem);
   }
 }
 
 function createProducts () {
   for (var i in productNames) {
-    productList.push(new Product(productNames[i]));
+    gameState.productList.push(new Product(productNames[i]));
   }
 }
 
 function createProductMap () {
-  for (var i = 0; i < productList.length; i++) {
-    productMap[productList[i].imageURL] = productList[i];
+  for (var i = 0; i < gameState.productList.length; i++) {
+    gameState.productMap[gameState.productList[i].imageURL] = gameState.productList[i];
   }
 }
 
@@ -158,9 +176,9 @@ function initializeSelectionWindow () {
 }
 
 function selectValidItem () {
-  var selection = randomItem(productList);
-  while (restrictedItems.includes(selection)) {
-    selection = randomItem(productList);
+  var selection = randomItem(gameState.productList);
+  while (gameState.restrictedItems.includes(selection)) {
+    selection = randomItem(gameState.productList);
   }
   return selection;
 }
@@ -175,4 +193,19 @@ function Product (info) {
   this.imageURL = info[1];
   this.numberOfClicks = 0;
   this.numberOfShows = 0;
+}
+
+function createOrUpdateGameState () {
+  var stringifiedGameState = JSON.stringify(gameState);
+  localStorage.setItem('gameState', stringifiedGameState);
+  return getGameState();
+}
+
+function getGameState() {
+  return JSON.parse(localStorage.getItem('gameState'));
+}
+
+function clearGameState() {
+  localStorage.removeItem('gameState');
+  return getGameState();
 }
