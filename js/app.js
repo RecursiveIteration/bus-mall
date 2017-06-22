@@ -112,7 +112,7 @@ function getPopularity () {
 
 function displayNothing () {
   for (var i = 2; i >= 0; i--) {
-    selectionItems.removeChild(choiceImages[i]);
+    selectionItems.removeChild(selectionItems.firstChild);
   }
 }
 
@@ -148,8 +148,10 @@ function createProductMap () {
 
 function initializeSelectionWindow () {
   for (var i = 0; i < 3; i++) {
+    var imageBox = document.createElement('div');
     choiceImages[i] = document.createElement('img');
-    selectionItems.appendChild(choiceImages[i]);
+    imageBox.appendChild(choiceImages[i]);
+    selectionItems.appendChild(imageBox);
   }
 }
 
