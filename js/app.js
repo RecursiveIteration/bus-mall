@@ -13,6 +13,8 @@ var gameState = {
 //Non game-state variables
 var choiceImages = [];
 var totalQuestions = 25;
+var introText = document.getElementById('intro');
+var closeText = document.getElementById('close');
 var selectionItems = document.getElementById('selectionItems');
 var results = document.getElementById('results');
 
@@ -114,6 +116,8 @@ function displayNothing () {
   for (var i = 2; i >= 0; i--) {
     selectionItems.removeChild(selectionItems.firstChild);
   }
+  introText.style.display = 'none';
+  closeText.style.display = 'block';
 }
 
 function displayChoices () {
