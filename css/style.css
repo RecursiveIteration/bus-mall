@@ -12,12 +12,20 @@
 }
 
 #selectionItems div {
+  box-shadow: 15px 15px 5px #777;
   display: inline-table;
   width: 250px;
   height: 250px;
-  border: 5px solid brown;
+  border: 5px solid #333;
   border-radius: 5%;
   margin-left: 25px;
+  transition-property: box-shadow;
+  transition-duration: 0.1s;
+  transition-timing-function: linear;
+}
+
+#selectionItems div:hover {
+  box-shadow: 10px 10px #555;
 }
 
 #results {
@@ -27,7 +35,15 @@
 }
 
 img {
+  opacity: 0.8;
   height: 100%;
   width: 100%;
   border-radius: 3%;
+  transition-property: opacity;
+  transition-duration: 0.1s;
+  transition-timing-function: linear;
+}
+
+img:hover {
+  opacity: 1.0;
 }
