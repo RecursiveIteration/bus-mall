@@ -16,25 +16,27 @@ var totalQuestions = 25;
 var selectionItems = document.getElementById('selectionItems');
 var results = document.getElementById('results');
 
-main();
+main(); //Start the game
 
 function main () {
-  var previousGameState = getGameState();
+  var previousGameState = getGameState(); //attempt to load previous game state
+  //If there was no preivous state saved, start a new game
   if (!previousGameState) {
     createProductMap();
+  //Otherwise set the current game state to the state that was loaded
   } else {
     gameState = previousGameState;
   }
-  initializeSelectionWindow();
-  createOrUpdateGameState();
-  askQuestion();
+  initializeSelectionWindow(); //create window elements
+  askQuestion(); //Ask the first question for this session
 }
 
 function askQuestion () {
-  selectChoices();
-  displayChoices();
+  selectChoices(); //Select 3 random items
+  displayChoices(); //Show the 3 selected items
 }
 
+//Click event handler
 function registerVote (e) {
   try {
     var selectedItemKey = e.target.getAttribute('id');
