@@ -59,20 +59,24 @@ function askQuestion () {
 }
 
 function registerVote (e) {
-  var selectedItem = gameState.productMap[e.target.getAttribute('src')];
-  selectedItem.numberOfClicks++;
-  for (var i = 0; i < gameState.currentItems.length; i++) {
-    console.log(gameState.currentItems.length);
-    gameState.currentItems[i].numberOfShows++;
-  }
-  gameState.currentQuestion++;
-  createOrUpdateGameState();
-  if (gameState.currentQuestion < totalQuestions) {
-    askQuestion();
-  } else {
-    selectionItems.removeEventListener('click', registerVote);
-    displayNothing();
-    printReport();
+  try {
+    var selectedItem = gameState.productMap[e.target.getAttribute('src')];
+    selectedItem.numberOfClicks++;
+    for (var i = 0; i < gameState.currentItems.length; i++) {
+      console.log(gameState.currentItems.length);
+      gameState.currentItems[i].numberOfShows++;
+    }
+    gameState.currentQuestion++;
+    createOrUpdateGameState();
+    if (gameState.currentQuestion < totalQuestions) {
+      askQuestion();
+    } else {
+      selectionItems.removeEventListener('click', registerVote);
+      displayNothing();
+      printReport();
+    }
+  } catch (err) {
+    alert('Please click on an image.');
   }
 }
 
