@@ -6,15 +6,28 @@
   color: #333;
 }
 
-img {
+#selectionItems {
+  margin-top: 50px;
+  margin-left: 50px;
+}
+
+#selectionItems div {
+  display: inline-table;
+  width: 250px;
+  height: 250px;
   border: 5px solid brown;
-  max-width: 200px;
-  max-height: 200px;
-  margin: auto;
+  border-radius: 5%;
+  margin-left: 25px;
 }
 
 #results {
   margin-left: 25px;
   width: 75%;
   height: 75%;
+}
+
+img {
+  height: 100%;
+  width: 100%;
+  border-radius: 3%;
 }
