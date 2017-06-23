@@ -71,8 +71,15 @@ function printReport() {
     data: {
       labels: getNames(),
       datasets: [{
-        label: 'Popularity',
-        data: getPopularity(),
+        label: 'Times Clicked',
+        data: getPopularity()[0],
+        backgroundColor: '#8f1386',
+        borderColor: '#8f1386',
+        borderWidth: 1
+      },
+      {
+        label: 'Times Shown',
+        data: getPopularity()[1],
         backgroundColor: '#333',
         borderColor: '#333',
         borderWidth: 1
@@ -100,16 +107,13 @@ function getNames () {
 }
 
 function getPopularity () {
-  var result = [];
+  var numClicks = [];
+  var numShows = [];
   for (var i in gameState.productMap) {
-    try {
-      var percent = gameState.productMap[i].numberOfClicks / gameState.productMap[i].numberOfShows;
-      result.push(percent);
-    } catch (err) {
-      result.push(0);
-    }
+    numClicks.push(gameState.productMap[i].numberOfClicks);
+    numShows.push(gameState.productMap[i].numberOfShows);
   }
-  return result;
+  return [numClicks, numShows];
 }
 
 function displayNothing () {
