@@ -95,7 +95,7 @@ function printReport() {
       }
     }
   });
-  clearGameState();
+  resetGame();
 }
 
 function getNames () {
@@ -200,7 +200,7 @@ function getGameState() {
   return JSON.parse(localStorage.getItem('gameState'));
 }
 
-function clearGameState() {
-  localStorage.removeItem('gameState');
-  return getGameState();
+function resetGame() {
+  gameState.currentItems = 0;
+  createOrUpdateGameState();
 }
