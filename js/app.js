@@ -201,6 +201,6 @@ function getGameState() {
 }
 
 function resetGame() {
-  gameState.currentItems = 0;
+  gameState.currentQuestion = 0;
   createOrUpdateGameState();
 }
